@@ -1,0 +1,423 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "int256",
+        "name": "_maxTempThreshold",
+        "type": "int256"
+      },
+      {
+        "internalType": "int256",
+        "name": "_maxHumidityThreshold",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "batchId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "BatchClosed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "batchId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "farmer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "BatchCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "batchId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "dataHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "temperature",
+        "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "humidity",
+        "type": "int256"
+      }
+    ],
+    "name": "BreachDetected",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "string",
+        "name": "deviceId",
+        "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "registeredBy",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "DeviceRegistered",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "batchId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "dataHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "temperature",
+        "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "humidity",
+        "type": "int256"
+      }
+    ],
+    "name": "HashAnchored",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "batchId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "dataHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "int256",
+        "name": "temperature",
+        "type": "int256"
+      },
+      {
+        "internalType": "int256",
+        "name": "humidity",
+        "type": "int256"
+      }
+    ],
+    "name": "anchorHash",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "batches",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "exists",
+        "type": "bool"
+      },
+      {
+        "internalType": "address",
+        "name": "farmer",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "createdAt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "closed",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "batchId",
+        "type": "uint256"
+      }
+    ],
+    "name": "closeBatch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "batchId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "farmer",
+        "type": "address"
+      }
+    ],
+    "name": "createBatch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "devices",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "registered",
+        "type": "bool"
+      },
+      {
+        "internalType": "address",
+        "name": "registeredBy",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "registeredAt",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "batchId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getBatchHistory",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "dataHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "int256",
+            "name": "temperature",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "humidity",
+            "type": "int256"
+          },
+          {
+            "internalType": "bool",
+            "name": "breach",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct SecureHarvest.Reading[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "batchId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getReadingCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxHumidityThreshold",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxTempThreshold",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "deviceId",
+        "type": "string"
+      }
+    ],
+    "name": "registerDevice",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "int256",
+        "name": "_maxTempThreshold",
+        "type": "int256"
+      },
+      {
+        "internalType": "int256",
+        "name": "_maxHumidityThreshold",
+        "type": "int256"
+      }
+    ],
+    "name": "setThresholds",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
