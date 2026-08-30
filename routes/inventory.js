@@ -22,12 +22,13 @@ router.post("/", async (req, res) => {
 
 /**
  * GET /api/inventory
- * List all inventory records. Optional query: ?status=low_stock
+ * List all inventory records. Optional query: ?status=low_stock&retailerId=retailer-01
  */
 router.get("/", async (req, res) => {
   try {
     const filter = {};
     if (req.query.status) filter.status = req.query.status;
+    if (req.query.retailerId) filter.retailerId = req.query.retailerId;
     const items = await Inventory.find(filter).sort({ receivedAt: -1 });
     res.json(items);
   } catch (err) {
