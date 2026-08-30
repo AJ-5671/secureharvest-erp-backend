@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { ethers } = require("ethers");
 const Order = require("../models/Order");
+const Inventory = require("../models/Inventory");
 const { getNextBatchId } = require("../models/Counter");
 const abi = require("../abi/SecureHarvest.json");
 
@@ -15,6 +16,24 @@ function getWriteContract() {
   const signer = new ethers.Wallet(PRIVATE_KEY, provider);
   return new ethers.Contract(CONTRACT_ADDRESS, abi, signer);
 }
+
+/**
+ * GET /api/orders/meta/ids
+ * Returns the distinct retailerId / supplierId values actually used so far —
+ * there's no fixed master list of suppliers/retailers in this system, this
+ * just reflects real data, useful for populating dropdowns.
+ */
+router.get("/meta/ids", async (req, res) => {
+  try {
+    const [retailerIds, supplierIds] = await Promise.all([
+      Order.distinct("retailerId"),
+      Order.distinct("supplierId"),
+    ]);
+    res.json({ retailerIds, supplierIds });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 /**
  * POST /api/orders
@@ -110,8 +129,26 @@ router.patch("/:orderId/accept", async (req, res) => {
     order.linkedBatchId = batchId;
     await order.save();
 
+    // Close the loop fully: also create the matching inventory record for this
+    // new batch, using the order's own product/quantity/retailer details.
+    // Skip silently if one somehow already exists for this batchId.
+    let inventory = null;
+    try {
+      inventory = await Inventory.create({
+        batchId,
+        productName: order.productType,
+        retailerId: order.retailerId,
+        quantity: order.quantity,
+        unit: order.unit,
+      });
+    } catch (invErr) {
+      if (invErr.code !== 11000) throw invErr; // ignore "already exists", surface anything else
+      inventory = await Inventory.findOne({ batchId });
+    }
+
     res.json({
       order,
+      inventory,
       onChain: { txHash: tx.hash, blockNumber: receipt.blockNumber, batchId },
     });
   } catch (err) {
