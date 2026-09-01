@@ -43,6 +43,10 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       default: null, // filled in once the order is accepted and a batch is created on-chain
     },
+    farmerAddress: {
+      type: String,
+      default: null, // the wallet address recorded as the batch's farmer, set on accept
+    },
   },
   { timestamps: true }
 );
