@@ -19,17 +19,19 @@ function getWriteContract() {
 
 /**
  * GET /api/orders/meta/ids
- * Returns the distinct retailerId / supplierId values actually used so far —
- * there's no fixed master list of suppliers/retailers in this system, this
- * just reflects real data, useful for populating dropdowns.
+ * Returns the distinct retailerId / supplierId / farmerAddress values actually
+ * used so far — there's no fixed master list of suppliers/retailers/farmers in
+ * this system, this just reflects real data, useful for populating dropdowns.
  */
 router.get("/meta/ids", async (req, res) => {
   try {
-    const [retailerIds, supplierIds] = await Promise.all([
+    const [retailerIds, supplierIds, farmerAddressesRaw] = await Promise.all([
       Order.distinct("retailerId"),
       Order.distinct("supplierId"),
+      Order.distinct("farmerAddress"),
     ]);
-    res.json({ retailerIds, supplierIds });
+    const farmerAddresses = farmerAddressesRaw.filter(Boolean); // drop null (orders never accepted yet)
+    res.json({ retailerIds, supplierIds, farmerAddresses });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -99,6 +101,11 @@ router.patch("/:orderId/accept", async (req, res) => {
     if (!farmerAddress) {
       return res.status(400).json({ error: "farmerAddress is required to create the on-chain batch." });
     }
+    if (!ethers.isAddress(farmerAddress)) {
+      return res.status(400).json({
+        error: "farmerAddress is not a valid Ethereum address (expected format: 0x followed by 40 hex characters).",
+      });
+    }
 
     const contract = getWriteContract();
     if (!contract) {
@@ -127,6 +134,7 @@ router.patch("/:orderId/accept", async (req, res) => {
     order.status = "fulfilled";
     order.fulfilledAt = new Date();
     order.linkedBatchId = batchId;
+    order.farmerAddress = farmerAddress;
     await order.save();
 
     // Close the loop fully: also create the matching inventory record for this
