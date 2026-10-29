@@ -1,0 +1,43 @@
+{
+  "_notes": "ERP-only data — never touches the blockchain. Inventory links to batchId from mockContractData.json so stock can be traced back to a verified batch, but this file itself is purely off-chain retailer state.",
+
+  "suppliers": [
+    { "supplierName": "Green Valley Farms", "contactInfo": "greenvalley@example.com" },
+    { "supplierName": "Sunrise Cooperative", "contactInfo": "sunrise@example.com" }
+  ],
+
+  "inventory": [
+    {
+      "batchId": 1,
+      "productType": "Tomato",
+      "supplierName": "Green Valley Farms",
+      "quantityInStock": 42,
+      "lowStockThreshold": 20
+    },
+    {
+      "batchId": 2,
+      "productType": "Mango",
+      "supplierName": "Sunrise Cooperative",
+      "quantityInStock": 15,
+      "lowStockThreshold": 20
+    },
+    {
+      "batchId": 3,
+      "productType": "Spinach",
+      "supplierName": "Green Valley Farms",
+      "quantityInStock": 60,
+      "lowStockThreshold": 25
+    }
+  ],
+
+  "orders": [
+    {
+      "orderId": 1,
+      "productType": "Mango",
+      "supplierName": "Sunrise Cooperative",
+      "quantityRequested": 50,
+      "status": "Pending",
+      "requestedAt": 1750100000
+    }
+  ]
+}

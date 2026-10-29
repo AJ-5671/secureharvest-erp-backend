@@ -1,0 +1,106 @@
+{
+  "_notes": "Mirrors ISecureHarvest.sol exactly. Field names/casing match what ethers.js would return from the real contract (structs come back as arrays + named keys). Person B should build a small adapter (mockContractService.js) so swapping this file for real ethers.js calls later touches ONE file, not every component.",
+
+  "devices": [
+    {
+      "deviceId": "ESP32-FARM-001",
+      "owner": "0xA11cE00000000000000000000000000000001",
+      "isRegistered": true,
+      "registeredAt": 1750000000
+    },
+    {
+      "deviceId": "ESP32-COLD-002",
+      "owner": "0xA11cE00000000000000000000000000000002",
+      "isRegistered": true,
+      "registeredAt": 1750003600
+    },
+    {
+      "deviceId": "ESP32-LOGI-003",
+      "owner": "0xA11cE00000000000000000000000000000003",
+      "isRegistered": true,
+      "registeredAt": 1750007200
+    }
+  ],
+
+  "batches": [
+    {
+      "batchId": 1,
+      "productType": "Tomato",
+      "createdBy": "0xA11cE00000000000000000000000000000001",
+      "status": 2,
+      "statusLabel": "Delivered",
+      "createdAt": 1750000500,
+      "readingCount": 6,
+      "hasBreach": true
+    },
+    {
+      "batchId": 2,
+      "productType": "Mango",
+      "createdBy": "0xA11cE00000000000000000000000000000001",
+      "status": 1,
+      "statusLabel": "InTransit",
+      "createdAt": 1750010000,
+      "readingCount": 3,
+      "hasBreach": false
+    },
+    {
+      "batchId": 3,
+      "productType": "Spinach",
+      "createdBy": "0xA11cE00000000000000000000000000000001",
+      "status": 0,
+      "statusLabel": "Created",
+      "createdAt": 1750020000,
+      "readingCount": 0,
+      "hasBreach": false
+    }
+  ],
+
+  "hashRecords": {
+    "1": [
+      { "batchId": 1, "deviceId": "ESP32-FARM-001", "dataHash": "0x1a2b3c...mockhash01", "timestamp": 1750000600 },
+      { "batchId": 1, "deviceId": "ESP32-FARM-001", "dataHash": "0x1a2b3c...mockhash02", "timestamp": 1750002400 },
+      { "batchId": 1, "deviceId": "ESP32-COLD-002", "dataHash": "0x1a2b3c...mockhash03", "timestamp": 1750004200 },
+      { "batchId": 1, "deviceId": "ESP32-COLD-002", "dataHash": "0x1a2b3c...mockhash04", "timestamp": 1750006000 },
+      { "batchId": 1, "deviceId": "ESP32-LOGI-003", "dataHash": "0x1a2b3c...mockhash05", "timestamp": 1750007800 },
+      { "batchId": 1, "deviceId": "ESP32-LOGI-003", "dataHash": "0x1a2b3c...mockhash06", "timestamp": 1750009600 }
+    ],
+    "2": [
+      { "batchId": 2, "deviceId": "ESP32-FARM-001", "dataHash": "0x1a2b3c...mockhash07", "timestamp": 1750010200 },
+      { "batchId": 2, "deviceId": "ESP32-FARM-001", "dataHash": "0x1a2b3c...mockhash08", "timestamp": 1750012000 },
+      { "batchId": 2, "deviceId": "ESP32-COLD-002", "dataHash": "0x1a2b3c...mockhash09", "timestamp": 1750013800 }
+    ],
+    "3": []
+  },
+
+  "breachEvents": [
+    {
+      "batchId": 1,
+      "deviceId": "ESP32-COLD-002",
+      "breachType": "TEMP_HIGH",
+      "value": 1250,
+      "threshold": 800,
+      "valueDisplay": "12.50°C",
+      "thresholdDisplay": "8.00°C",
+      "timestamp": 1750004200
+    }
+  ],
+
+  "rawReadings_offchain": {
+    "_notes": "This is what the middleware hashes before calling anchorHash(). Not on-chain, but Person B's simulator/mock should generate this shape so the dashboard's temperature/humidity graph has something to plot.",
+    "1": [
+      { "deviceId": "ESP32-FARM-001", "temperature": 24.10, "humidity": 61.2, "timestamp": 1750000600 },
+      { "deviceId": "ESP32-FARM-001", "temperature": 24.30, "humidity": 60.8, "timestamp": 1750002400 },
+      { "deviceId": "ESP32-COLD-002", "temperature": 12.50, "humidity": 55.0, "timestamp": 1750004200 },
+      { "deviceId": "ESP32-COLD-002", "temperature": 7.80,  "humidity": 54.1, "timestamp": 1750006000 },
+      { "deviceId": "ESP32-LOGI-003", "temperature": 8.10,  "humidity": 53.9, "timestamp": 1750007800 },
+      { "deviceId": "ESP32-LOGI-003", "temperature": 8.00,  "humidity": 53.5, "timestamp": 1750009600 }
+    ]
+  },
+
+  "batchStatusEnum": {
+    "0": "Created",
+    "1": "InTransit",
+    "2": "Delivered",
+    "3": "Rejected"
+  }
+}
